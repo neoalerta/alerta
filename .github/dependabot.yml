@@ -2,20 +2,30 @@
 
 version: 2
 updates:
-  # Dependências Python. Menores e patches chegam agrupados num PR por semana
-  # para não virar ruído; majors continuam vindo um por dependência, para
-  # avaliar caso a caso.
+  # Dependências Python: uma rodada por mês, tudo agrupado. No máximo um PR
+  # de atualizações (menores e patches), um de majors e um de correções de
+  # segurança, em vez de um PR por dependência.
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
+      interval: "monthly"
+    open-pull-requests-limit: 3
     groups:
-      minor-e-patch:
+      atualizacoes:
+        applies-to: version-updates
         update-types: ["minor", "patch"]
+      majors:
+        applies-to: version-updates
+        update-types: ["major"]
+      seguranca:
+        applies-to: security-updates
+        patterns: ["*"]
 
-  # Actions usadas nos workflows (checkout, setup-python etc.).
+  # Actions usadas nos workflows: um PR por mês com todas.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      actions:
+        patterns: ["*"]
