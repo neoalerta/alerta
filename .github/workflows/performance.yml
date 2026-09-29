@@ -1,15 +1,22 @@
 name: Performance
 
+# Roda depois que o workflow Docker publica a imagem do fork; antes disparava
+# em paralelo e testava ghcr.io/alerta/alerta-api, a imagem do upstream.
 on:
-  push:
-    branches: [ master, release/* ]
-    tags: [ '**' ]
+  workflow_run:
+    workflows: [ Docker ]
+    types: [ completed ]
+
+permissions:
+  contents: read
+  packages: read
 
 env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   load-test:
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
 
     services:
@@ -27,7 +34,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       alerta:
-        image: ghcr.io/alerta/alerta-api
+        image: ghcr.io/${{ github.repository_owner }}/alerta-api:${{ github.event.workflow_run.head_sha }}
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
         ports:
           - 8080:8080
         env:

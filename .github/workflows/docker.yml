@@ -5,6 +5,12 @@ on:
     branches: [ master, release/* ]
     tags: [ '**' ]
 
+# Sem packages: write o GITHUB_TOKEN da org não consegue criar o pacote no GHCR
+# ("installation not allowed to Create organization package").
+permissions:
+  contents: read
+  packages: write
+
 env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   BUILD_NUMBER: ${{ format('{0}-{1}-{2}', github.run_id, github.run_number, github.run_attempt) }}
@@ -31,6 +37,7 @@ jobs:
           -t $IMAGE_NAME
           -t $REPOSITORY_URL/$IMAGE_NAME:$(cat VERSION)
           -t $REPOSITORY_URL/$IMAGE_NAME:$(git rev-parse --short HEAD)
+          -t $REPOSITORY_URL/$IMAGE_NAME:${{ github.sha }}
           -t $REPOSITORY_URL/$IMAGE_NAME:latest .
       - name: Docker Login
         uses: docker/login-action@v3
