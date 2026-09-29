@@ -2,7 +2,20 @@
 
 version: 2
 updates:
+  # Dependências Python. Menores e patches chegam agrupados num PR por semana
+  # para não virar ruído; majors continuam vindo um por dependência, para
+  # avaliar caso a caso.
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      minor-e-patch:
+        update-types: ["minor", "patch"]
+
+  # Actions usadas nos workflows (checkout, setup-python etc.).
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
