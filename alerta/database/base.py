@@ -211,7 +211,7 @@ class Database(Base):
     def get_environments(self, query=None, page=None, page_size=1000):
         raise NotImplementedError
 
-    def get_environments_count(query: Query = None) -> int:
+    def get_environments_count(self, query: Query = None) -> int:
         raise NotImplementedError
 
     # SERVICES
@@ -226,7 +226,7 @@ class Database(Base):
 
     # ALERT TAGS
 
-    def get_alert_tags(self, query=None, topn=1000):
+    def get_alert_tags(self, query=None, topn=None):
         raise NotImplementedError
 
     # BLACKOUTS
