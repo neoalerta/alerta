@@ -1,7 +1,7 @@
 (function($, window) {
 
   var config = {
-    endpoint: 'http://api.alerta.io',
+    endpoint: 'http://localhost:8080',
     key: null
   };
 

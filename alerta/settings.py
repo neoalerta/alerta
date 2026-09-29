@@ -4,7 +4,7 @@
 # To override these settings use /etc/alertad.conf or the contents of the
 # configuration file set by the environment variable ALERTA_SVR_CONF_FILE.
 #
-# Further information on settings can be found at https://docs.alerta.io
+# Further information on settings can be found at https://github.com/neoalerta/alerta-docs
 
 from typing import Any, Dict, List, Tuple  # noqa
 
@@ -184,11 +184,8 @@ AUDIT_URL = None  # send audit log events via webhook URL
 # CORS settings
 CORS_ALLOW_HEADERS = ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin', 'X-Request-ID']
 CORS_ORIGINS = [
-    # 'https://try.alerta.io',
-    # 'https://explorer.alerta.io',
     'http://localhost',
-    'http://localhost:8000',
-    r'https?://\w*\.?local\.alerta\.io:?\d*/?.*'  # => http(s)://*.local.alerta.io:<port>
+    'http://localhost:8000'
 ]
 CORS_SUPPORTS_CREDENTIALS = AUTH_REQUIRED
 

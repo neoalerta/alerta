@@ -30,7 +30,7 @@ def is_in_xloop(server):
 class Forwarder(PluginBase):
     """
     Alert and action forwarder for federated Alerta deployments
-    See https://docs.alerta.io/en/latest/federated.html
+    See https://github.com/neoalerta/alerta-docs/blob/master/source/federated.rst
     """
 
     def pre_receive(self, alert: 'Alert', **kwargs) -> 'Alert':
