@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # 3.12: o autopep8 fixado no pre-commit (v2.0.4) usa lib2to3, que não
       # existe no 3.13. Os testes rodam em 3.13, a versão da imagem.
       - name: Set up Python 3.12
