@@ -15,7 +15,7 @@ setuptools.setup(
     description='Alerta server WSGI application',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
-    url='https://github.com/guardian/alerta',
+    url='https://github.com/neoalerta/alerta',
     license='Apache License 2.0',
     author='Nick Satterly',
     author_email='nfsatterly@gmail.com',

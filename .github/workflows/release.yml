@@ -61,6 +61,11 @@ jobs:
     name: Publish
     needs: test
     runs-on: ubuntu-latest
+    # O nome alerta-server no PyPI é do upstream; o fork publica wheel e sdist
+    # como assets da GitHub Release. Para instalar direto do git:
+    #   pip install "git+https://github.com/neoalerta/alerta@<tag>"
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -71,24 +76,22 @@ jobs:
       - name: Build
         id: build
         run: |
-          python3 -m pip install --upgrade build
+          python3 -m pip install --upgrade build twine
           python3 -m build
-      - name: Publish to PyPI
-        id: publish
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          python3 -m pip install --upgrade twine
           python3 -m twine check dist/*
-          python3 -m twine upload --verbose dist/*
+      - name: Test Install
+        run: |
+          python3 -m pip install dist/*.whl
+          python3 -m pip freeze
+      - name: Publish GitHub Release
+        id: publish
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          files: dist/*
 
       - uses: act10ns/slack@v2
         with:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-
-      - name: Test Install
-        run: |
-          python3 -m pip install --upgrade alerta-server
-          python3 -m pip freeze
+        if: failure()
